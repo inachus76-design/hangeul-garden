@@ -21,7 +21,8 @@ function illustration(i){
  `<path d="M27 28h8v42q-21-9-23 5-1 14 17 8 9-3 6-13V37l37-8v31q-19-5-22 8-3 14 14 10 11-2 10-16V14L27 25z" fill="#9bab79"/><path d="M10 19v9M6 23h8M88 67v10M83 72h10" stroke="#d8b573" stroke-width="3"/>`
  ];return window.HangulArt.enhance(svg(pictures[i]));
 }
-$('#word-grid').innerHTML=WORDS.map((w,i)=>`<button class="word-card" style="--card-bg:${BGS[i]}" data-word="${w}" aria-label="${w} 만들기"><span class="card-number">${String(i+1).padStart(2,'0')}</span><span class="picture">${illustration(i)}</span><strong>${w}</strong><span class="scene-caption">${window.HangulRides.planNames(w).map(n=>n.replace(/빙글빙글 |활짝 피는 |펼쳐지는 |둥실둥실 |쏙쏙 |몽글몽글 |팔랑팔랑 |구불구불 |바람에 펄럭이는 |두근두근 |꾹꾹 |칙칙폭폭 |부릉부릉 /g,'')).join(' · ')}</span></button>`).join('');
+function renderWords(){ $('#word-grid').innerHTML=WORDS.map((w,i)=>`<button class="word-card" style="--card-bg:${BGS[i%BGS.length]}" data-word="${w}" aria-label="${w} 만들기"><span class="card-number">${String(i+1).padStart(2,'0')}</span><span class="picture">${illustration(i%10)}</span><strong>${w}</strong><span class="scene-caption">${window.HangulRides.planNames(w).map(n=>n.replace(/빙글빙글 |활짝 피는 |펼쳐지는 |둥실둥실 |쏙쏙 |몽글몽글 |팔랑팔랑 |구불구불 |바람에 펄럭이는 |두근두근 |꾹꾹 |칙칙폭폭 |부릉부릉 /g,'')).join(' · ')}</span></button>`).join('');}
+renderWords();
 const CHO=[...'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'];
 const JUNG=[...'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'];
 const JONG=['',...'ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ'];
@@ -30,7 +31,7 @@ const PATHS={
  'ㄱ':'M18 18H82V82','ㄴ':'M18 18V82H82','ㄷ':'M82 18H18V82H82','ㄹ':'M18 18H82V50H18V82H82','ㅁ':'M18 18H82V82H18Z','ㅂ':'M18 18V82H82V18M18 49H82','ㅅ':'M50 18Q48 57 16 82M50 18Q52 57 84 82','ㅇ':'M50 17C7 17 7 83 50 83S93 17 50 17','ㅈ':'M18 20H82M50 20Q47 57 16 82M50 20Q53 57 84 82','ㅊ':'M50 9V20M18 30H82M50 30Q47 60 16 86M50 30Q53 60 84 86','ㅋ':'M18 18H82V82M18 49H82','ㅌ':'M82 18H18V82H82M18 50H82','ㅍ':'M12 18H88M12 82H88M30 18V82M70 18V82','ㅎ':'M50 9V18M16 29H84M50 43C17 43 17 88 50 88S83 43 50 43',
  'ㅏ':'M44 10V90M44 50H81','ㅐ':'M30 10V90M30 50H60M76 10V90','ㅑ':'M44 10V90M44 34H81M44 65H81','ㅓ':'M58 10V90M20 50H58','ㅕ':'M58 10V90M20 34H58M20 65H58','ㅗ':'M50 16V65M10 65H90','ㅜ':'M10 35H90M50 35V88','ㅡ':'M10 50H90','ㅣ':'M50 10V90','ㅘ':'M10 72H56M32 38V72M68 10V90M68 43H92','ㅝ':'M8 32H56M32 32V82M77 10V90M53 57H77'
 };
-function jamoSVG(j){let p=PATHS[j];if(!p&&j==='ㅆ')return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="${PATHS['ㅅ']}" transform="translate(-2 0) scale(.55 1)"/><path d="${PATHS['ㅅ']}" transform="translate(47 0) scale(.55 1)"/></g></svg>`;if(!p)throw new Error('Missing jamo: '+j);return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="${p}" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
+function jamoSVG(j){let p=PATHS[j];if(!p&&j==='ㅆ')return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><path d="${PATHS['ㅅ']}" transform="translate(-2 0) scale(.55 1)"/><path d="${PATHS['ㅅ']}" transform="translate(47 0) scale(.55 1)"/></g></svg>`;if(!p)return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><text x="50" y="79" text-anchor="middle" font-family="Malgun Gothic, sans-serif" font-weight="700" font-size="90" fill="currentColor">${j}</text></svg>`;return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="${p}" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
 let runId=0,paused=false,sound=true,currentWord='',speed=1,recognition=null,listening=false;
 const stage=$('#stage');
 const wait=async(ms,id)=>{let elapsed=0;while(elapsed<ms){if(id!==runId)return false;await new Promise(r=>setTimeout(r,40));if(!paused)elapsed+=40;}return id===runId;};
@@ -66,7 +67,7 @@ async function start(word){stopVoice();const id=++runId;currentWord=word;paused=
  const ending=window.HangulEndings.create({host:$('#scene'),word});$('#scene').classList.remove('dim');
  $('#instruction').textContent=ending.title;$('#explanation').textContent=ending.note;
  $('#word-result').setAttribute('data-ending',ending.theme);
- $('#word-result').innerHTML=[...word].map((c,i)=>c===' '?'<span class="space"></span>':`<span class="finished-letter" style="--letter-index:${i};color:#${['665689','8a5268','527a6a','58744e','7e5a8c','79618d','796740','5a6a92','8d5f71','55785d'][WORDS.indexOf(word)]};animation-delay:${i*.14}s">${c}</span>`).join('');
+ $('#word-result').innerHTML=[...word].map((c,i)=>c===' '?'<span class="space"></span>':`<span class="finished-letter" style="--letter-index:${i};color:#${['665689','8a5268','527a6a','58744e','7e5a8c','79618d','796740','5a6a92','8d5f71','55785d'][Math.max(0,WORDS.indexOf(word))%10]};animation-delay:${i*.14}s">${c}</span>`).join('');
  $('#word-result').classList.add('show');$('#confetti').innerHTML='';chime(true);
  if(!await animate(3400,ending.frame,id))return;
  $('#pause').disabled=true;speak(word);$('#finish-actions').hidden=false;$('#play-hint').hidden=true;
