@@ -21,5 +21,12 @@
   const defs=`<defs>${gradients}<filter id="${p}-soft" x="-35%" y="-30%" width="180%" height="185%"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#6e6170" flood-opacity=".16"/></filter></defs>`;
   return markup.replace('<svg ','<svg stroke-linecap="round" stroke-linejoin="round" ').replace('>','>'+defs);
  }
- window.HangulArt={tint,face,details,bunny,enhance};
+ function backdrop(type){
+  const sprites=window.HangulSprites;if(!sprites)return '';
+  const water=['duck','tube','fish','shell'].includes(type),inside=['drawer','curtain','stamp','lunch','laundry'].includes(type),fair=['carousel','ferris','balloon','plates','bubble'].includes(type),rail=['train','cars'].includes(type);
+  const id=water?'duck-pond':inside?'warm-house':fair?'festival':rail?'train-station':'flower-garden';
+  const corner=water?'seashell':inside?'flower':fair?'balloons':rail?'flower':'apple-tree';
+  return `<g class="picture-backdrop" aria-hidden="true" pointer-events="none"><image href="${sprites[id]}" x="20" y="0" width="960" height="565" preserveAspectRatio="xMidYMid meet" opacity=".24"/><image href="${sprites[id]}" x="135" y="400" width="730" height="210" preserveAspectRatio="xMidYMax meet" opacity=".8"/><image href="${sprites[corner]}" x="-25" y="355" width="205" height="245" preserveAspectRatio="xMidYMax meet" opacity=".85"/><image href="${sprites[water?'flower':fair?'flower':inside?'gift-box':'butterfly']}" x="845" y="405" width="175" height="195" preserveAspectRatio="xMidYMax meet" opacity=".85"/></g>`;
+ }
+ window.HangulArt={tint,face,details,bunny,enhance,backdrop};
 })();
