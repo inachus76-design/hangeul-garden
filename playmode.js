@@ -21,7 +21,7 @@
     const click=()=>{
      if(finished||!active()||chosen.has(index))return;
      if(index>=needed){node.classList.remove('try-again');void node.getBoundingClientRect();node.classList.add('try-again');el('explanation').textContent='다른 친구를 찾아볼까요? 괜찮아요, 다시 톡!';return;}
-     chosen.add(index);node.classList.add('picked');node.setAttribute('aria-pressed','true');stars++;el('game-stars').textContent=`⭐ ${stars}`;
+     chosen.add(index);node.classList.add('picked','jamo-only');node.setAttribute('aria-label',`${node.dataset.jamo} 선택 완료`);host.querySelectorAll(`#ride-tool-${index},#ride-rope-${index},#object-line-${index}`).forEach(part=>part.classList.add('selected-prop-tool')); node.setAttribute('aria-pressed','true');stars++;el('game-stars').textContent=`⭐ ${stars}`;
      const slots=el('pick-progress').querySelectorAll('.pick-slot');slots[chosen.size-1].textContent=node.dataset.jamo;slots[chosen.size-1].classList.add('found');
      chime();reward(['찾았다! ✨','멋진 발견! ⭐','잘했어요! 🌸'][(chosen.size-1)%3]);
      el('explanation').textContent=`${needed}명 중 ${chosen.size}명을 찾았어요!`;
