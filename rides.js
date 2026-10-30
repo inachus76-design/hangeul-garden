@@ -33,7 +33,7 @@
   if(type==='carousel')return `<g data-carrier="swing"><path d="M-69-51Q0-68 69-51L66 42Q0 61-66 42z" fill="${color}" stroke="#fff9ed" stroke-width="4"/><path d="M-75 40h150v15H-75z" fill="#a28caa"/><path d="M-62-49v-16M62-49v-16" stroke="#858494" stroke-width="5" stroke-linecap="round"/></g>`;
   return `<g data-carrier="slide-rider"><ellipse cy="35" rx="79" ry="20" fill="#9fbdb8"/><path d="M-62-38q61-37 124 0v65q-62 31-124 0z" fill="${color}" stroke="#fff8e8" stroke-width="4"/><path d="M-80 33q4 28 40 28H49q25-2 32-25" stroke="#83aaa4" stroke-width="9" fill="none" stroke-linecap="round"/></g>`;
  }
- function carrier(type,color){return plainCarrier(type,color)+window.HangulArt.details(type);}
+ function carrier(type,color){const id={icecream:'ice-cream',carousel:'swing',slide:'slide'}[type];return window.HangulSprites?.[id]?window.HangulSprites.carrier(id):plainCarrier(type,color)+window.HangulArt.details(type);}
  function scoopTool(i){return `<g id="ride-tool-${i}" data-object="icecream-scoop"><path d="M29-44L132-92" stroke="#8eabb2" stroke-width="18" stroke-linecap="round"/><path d="M-86-35q-6 67 77 67 86-2 89-64" fill="#c4d6d8" stroke="#8eabb2" stroke-width="5"/><path d="M-64-23q62 17 124-2" stroke="#eef3ed" stroke-width="5" fill="none"/></g>`;}
  function create({host,d,jamoSVG,slots=[0,1,2,3,4,5],offset={x:0,y:0}}){
   const type=kind(d),split=splitVowel(d,block(d,type).map(g=>({...g,x:g.x+offset.x,y:g.y+offset.y}))),{parts,goals,compound}=split,extra=['ㄴ','ㅅ','ㅓ','ㅋ','ㅣ','ㅈ'].filter(x=>!parts.includes(x));const letters=[...parts,...extra.slice(0,6-parts.length)];

@@ -57,6 +57,7 @@
  function scenery(type,goals){
   if(type==='duck')return `<g id="object-machine"><ellipse cx="500" cy="345" rx="455" ry="193" fill="#c4e1d7"/><path d="M115 335q70-20 140 0M690 405q70-20 140 0M330 480q80-18 160 0" stroke="#f6fae8" stroke-width="5" fill="none"/></g>`;
   if(type==='flower'||type==='butterfly')return `<g id="object-machine"><path d="M75 535v-76M910 540v-64" stroke="#86a779" stroke-width="6"/><g transform="translate(75 459) scale(.4)">${petals('#d7adc7')}</g><g transform="translate(910 477) scale(.45)">${petals('#e9cb86')}</g><path d="M0 540q240-18 500 0t500 0" stroke="#9dbb8e" stroke-width="4" fill="none"/></g>`;
+  if(type==='apple'&&window.HangulSprites)return `<g id="object-machine"><image href="${window.HangulSprites['apple-tree']}" x="120" y="8" width="760" height="550" preserveAspectRatio="xMidYMid meet"/></g>`;
   if(type==='apple')return `<g id="object-machine"><path d="M468 520l17-300h38l24 300" fill="#bc9877"/><path d="M501 295L265 147M509 311l228-166" stroke="#bc9877" stroke-width="23" stroke-linecap="round"/><g fill="#abc497"><ellipse cx="304" cy="180" rx="195" ry="111"/><ellipse cx="502" cy="135" rx="180" ry="110"/><ellipse cx="705" cy="180" rx="188" ry="111"/></g><ellipse cx="500" cy="529" rx="139" ry="22" fill="#99b287"/></g>`;
   if(type==='popsicle')return `<g id="object-machine"><path d="M80 350h840v170H80z" fill="#aabfc5" stroke="#fdf7e6" stroke-width="7"/><path d="M80 350l60-54h720l60 54" fill="#d5e2db"/><path d="M107 352h786" stroke="#86a4ad" stroke-width="10"/><path d="M112 382h776v105H112z" fill="#d4e0d6"/><path d="M270 420h460" stroke="#a7bbb0" stroke-width="7" stroke-linecap="round"/><path d="M130 519v30M870 519v30" stroke="#839c9a" stroke-width="12"/></g>`;
   if(type==='drawer')return `<g id="object-machine"><rect x="285" y="98" width="430" height="426" rx="18" fill="#c5a484" stroke="#af8d70" stroke-width="7"/><rect x="305" y="117" width="390" height="380" rx="8" fill="#9d8067"/><path d="M310 523v30M690 523v30" stroke="#a98b72" stroke-width="16" stroke-linecap="round"/></g>`;
@@ -102,7 +103,10 @@
   if(type==='ferris')return `<path d="M-66-52q66-29 132 0v107H-66z" fill="${c}" stroke="#fff7df" stroke-width="5"/><path d="M-77-53q77-42 154 0" stroke="#b7a4bc" stroke-width="13" stroke-linecap="round"/><rect x="-48" y="-32" width="96" height="73" rx="12" fill="#fff9e8"/><path d="M-56 62H56" stroke="#a58da9" stroke-width="9" stroke-linecap="round"/>`;
   throw new Error('Unknown object scene: '+type);
  }
- function shell(type,c,i){return plainShell(type,c,i)+window.HangulArt.details(type);}
+ function shell(type,c,i){
+ const ids={flower:'flower',umbrella:'umbrella',egg:'chick-egg',duck:'duck-pond',blocks:'blocks',bubble:'bubbles',train:'locomotive',mole:'mole',butterfly:'butterfly',drawer:'drawers',gift:'gift-box',tube:'swim-ring',popsicle:'popsicle',plates:'plate',laundry:'clothesline',lunch:'bento',fish:'fishing',curtain:'curtain',cars:'car-parking',stamp:'stamp',shell:'seashell',balloon:'balloons',ferris:'ferris-wheel'};
+ return window.HangulSprites?.[ids[type]]?window.HangulSprites.carrier(ids[type]):plainShell(type,c,i)+window.HangulArt.details(type);
+ }
  function positions(type){
   if(type==='flower')return Array.from({length:6},(_,i)=>({x:115+i*154,y:320}));
   if(type==='balloon')return Array.from({length:6},(_,i)=>({x:115+i*154,y:445}));

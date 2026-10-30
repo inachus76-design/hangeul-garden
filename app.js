@@ -7,6 +7,8 @@ const svg=(body,view='0 0 100 100')=>`<svg viewBox="${view}" xmlns="http://www.w
 const face=(x,y)=>`<circle cx="${x-6}" cy="${y}" r="1.6" fill="#576351"/><circle cx="${x+6}" cy="${y}" r="1.6" fill="#576351"/><path d="M${x-3} ${y+6}q3 4 6 0" fill="none" stroke="#576351" stroke-width="1.6" stroke-linecap="round"/>`;
 const petals=(cx,cy,color)=>`<g fill="${color}">${[0,60,120,180,240,300].map(a=>`<ellipse cx="${cx}" cy="${cy-13}" rx="9" ry="13" transform="rotate(${a} ${cx} ${cy})"/>`).join('')}<circle cx="${cx}" cy="${cy}" r="10" fill="#f8e4a6"/></g>`;
 function illustration(i){
+ const ids=['ice-cream','heart-garden','waving-rabbit','train-station','flower-garden','festival','warm-house','spaceship','puppet-theater','ferris-wheel'];
+ if(window.HangulSprites?.[ids[i]])return `<img class="sprite-card" src="${window.HangulSprites[ids[i]]}" alt="" width="180" height="160" loading="lazy">`;
  const c=COLORS[i];
  const pictures=[
  `<path d="M34 58l17 33 17-33" fill="#dcb877"/><path d="M39 62l23 17M45 58l20 13M61 60L46 80M65 65L51 86" stroke="#f4d6a5" stroke-width="2"/><path d="M27 54a24 24 0 1 1 48 0v7H27z" fill="#ecd69a"/><path d="M32 43a20 20 0 1 1 39 0" fill="#d99a91"/>${face(51,38)}<circle cx="56" cy="14" r="5" fill="#ad766c"/>`,
@@ -22,6 +24,7 @@ function illustration(i){
  ];return window.HangulArt.enhance(svg(pictures[i]));
 }
 function renderWords(){ $('#word-grid').innerHTML=WORDS.map((w,i)=>`<button class="word-card" style="--card-bg:${BGS[i%BGS.length]}" data-word="${w}" aria-label="${w} 만들기"><span class="card-number">${String(i+1).padStart(2,'0')}</span><span class="picture">${illustration(i%10)}</span><strong>${w}</strong><span class="scene-caption">${window.HangulRides.planNames(w).map(n=>n.replace(/빙글빙글 |활짝 피는 |펼쳐지는 |둥실둥실 |쏙쏙 |몽글몽글 |팔랑팔랑 |구불구불 |바람에 펄럭이는 |두근두근 |꾹꾹 |칙칙폭폭 |부릉부릉 /g,'')).join(' · ')}</span></button>`).join('');}
+if(window.HangulSprites) $('.mic-art').innerHTML=`<img src="${window.HangulSprites['waving-rabbit']}" alt="" width="180" height="180" style="width:100%;height:100%;object-fit:contain">`;
 renderWords();
 const CHO=[...'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'];
 const JUNG=[...'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'];
