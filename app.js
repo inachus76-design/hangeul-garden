@@ -44,14 +44,19 @@ function chime(final=false){if(!sound)return;try{const ctx=audioContext||(audioC
 let audioContext;
 const VOWEL_NOTES={'ㅘ':'ㅘ는 ㅗ와 ㅏ가 만난 모양이에요.','ㅝ':'ㅝ는 ㅜ와 ㅓ가 만난 모양이에요.','ㅐ':'ㅐ는 하나의 모음 친구로 만나요.'};
 function stopVoice(){if(recognition){recognition.abort();recognition=null;}listening=false;$('#listen').classList.remove('listening');$('#listen span').textContent='말해 볼래요';}
-function home(){runId++;paused=false;stopVoice();window.speechSynthesis?.cancel();$('#play').hidden=true;$('#home').hidden=false;$('#word-grid button')?.focus({preventScroll:true});}
-async function start(word){stopVoice();const id=++runId;currentWord=word;paused=false;window.speechSynthesis?.resume();speed=Number($('#speed').value);$('#pause').textContent='Ⅱ 잠깐 멈춤';$('#pause').disabled=false;$('#home').hidden=true;$('#play').hidden=false;$('#finish-actions').hidden=true;$('#play-hint').hidden=false;$('#collected').innerHTML='';$('#word-result').classList.remove('show');$('#word-result').innerHTML='';$('#confetti').innerHTML='';$('#syllable-result').classList.remove('show');$('#syllable-result').innerHTML='';$('#tokens').innerHTML='';$('#scene').classList.remove('dim');$('#assembly').style.opacity=0;const chars=[...word].filter(c=>c!==' ');$('#progress').innerHTML=chars.map(()=>'<span></span>').join('');$('#back').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});
+function home(){window.GardenPlay?.reset();runId++;paused=false;stopVoice();window.speechSynthesis?.cancel();$('#play').hidden=true;$('#home').hidden=false;$('#word-grid button')?.focus({preventScroll:true});}
+async function start(word){window.GardenPlay?.reset();stopVoice();const id=++runId;currentWord=word;paused=false;window.speechSynthesis?.resume();speed=Number($('#speed').value);$('#pause').textContent='Ⅱ 잠깐 멈춤';$('#pause').disabled=false;$('#home').hidden=true;$('#play').hidden=false;$('#finish-actions').hidden=true;$('#play-hint').hidden=false;$('#collected').innerHTML='';$('#word-result').classList.remove('show');$('#word-result').innerHTML='';$('#confetti').innerHTML='';$('#syllable-result').classList.remove('show');$('#syllable-result').innerHTML='';$('#tokens').innerHTML='';$('#scene').classList.remove('dim');$('#assembly').style.opacity=0;window.GardenPlay?.begin();const chars=[...word].filter(c=>c!==' ');$('#progress').innerHTML=chars.map(()=>'<span></span>').join('');$('#back').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});
  for(let n=0;n<chars.length;n++){if(id!==runId)return;const d=decompose(chars[n]);$('#progress').children[n].className='active';$('#scene').classList.remove('dim');$('#syllable-result').classList.remove('show');$('#syllable-result').innerHTML='';$('#assembly').style.opacity=0;
  const ride=window.HangulRides.create({host:$('#scene'),d,jamoSVG,word,index:n});
  $('#step-label').textContent=`${n+1} / ${chars.length} 번째 글자 · ${ride.title}`;
  $('#instruction').textContent=ride.intro;
  $('#explanation').textContent=ride.introNote;
  if(!await animate(ride.showTime,ride.show,id))return;
+ if(window.GardenPlay?.mode==='make'){
+  $('#instruction').textContent=`‘${d.char}’을 만드는 친구를 골라요!`;
+  $('#explanation').textContent='사물에 달린 자음과 모음을 손가락으로 톡톡 눌러 주세요.';
+  if(!await window.GardenPlay.choose({ride,host:$('#scene'),char:d.char,active:()=>id===runId&&!paused}))return;
+ }
  $('#instruction').textContent=`‘${d.char}’을 만드는 친구들만 남아요`;
  $('#explanation').textContent=ride.parts.join(' · ');chime();
  if(!await animate(1400,ride.select,id))return;
@@ -61,7 +66,7 @@ async function start(word){stopVoice();const id=++runId;currentWord=word;paused=
  $('#instruction').textContent='이제 어떤 글자가 보이나요?';
  $('#explanation').textContent=VOWEL_NOTES[d.vowel]||(d.final?`받침 ‘${d.final}’은 글자 아래에 있어요.`:'사물이 사라져도, 글자 친구들은 남아요.');
  if(!await animate(1700,ride.reveal,id))return;
- $('#instruction').textContent=`‘${d.char}’ 완성!`;speak(d.char);chime();
+ $('#instruction').textContent=`‘${d.char}’ 완성!`;speak(d.char);chime();window.GardenPlay?.letter(d.char);
  if(!await wait(1800*speed,id))return;
  $('#collected').insertAdjacentHTML('beforeend',`<span class="collected-letter">${d.char}</span>`);$('#progress').children[n].className='done';
  }
@@ -73,7 +78,7 @@ async function start(word){stopVoice();const id=++runId;currentWord=word;paused=
  $('#word-result').innerHTML=[...word].map((c,i)=>c===' '?'<span class="space"></span>':`<span class="finished-letter" style="--letter-index:${i};color:#${['665689','8a5268','527a6a','58744e','7e5a8c','79618d','796740','5a6a92','8d5f71','55785d'][Math.max(0,WORDS.indexOf(word))%10]};animation-delay:${i*.14}s">${c}</span>`).join('');
  $('#word-result').classList.add('show');$('#confetti').innerHTML='';chime(true);
  if(!await animate(3400,ending.frame,id))return;
- $('#pause').disabled=true;speak(word);$('#finish-actions').hidden=false;$('#play-hint').hidden=true;
+ $('#pause').disabled=true;window.GardenPlay?.finish(word);speak(word);$('#finish-actions').hidden=false;$('#play-hint').hidden=true;
 
 }
 $('#word-grid').addEventListener('click',e=>{const b=e.target.closest('[data-word]');if(b)start(b.dataset.word);});
