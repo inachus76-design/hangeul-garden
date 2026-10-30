@@ -7,12 +7,13 @@
  function reset(){cancelPick?.();cancelPick=null;clearTimeout(rewardTimer);el('reward-layer').innerHTML='';el('pick-progress').innerHTML='';el('game-hud').hidden=true;}
  function begin(){stars=0;el('game-hud').hidden=mode!=='make';el('game-stars').textContent='⭐ 0';}
  async function choose({ride,host,char,active}){
+  const canvas=host.querySelector('svg');canvas?.setAttribute('role','group');
   const props=[...host.querySelectorAll('[data-jamo]')],chosen=new Set(),needed=ride.parts.length;
   el('pick-progress').innerHTML=`<span>‘${char}’ 친구 찾기</span> ${ride.parts.map(()=>'<span class="pick-slot">?</span>').join('')}`;
   return new Promise(resolve=>{
    let finished=false;
    const handlers=[];
-   function clean(){handlers.forEach(([node,click,key])=>{node.removeEventListener('click',click);node.removeEventListener('keydown',key);node.removeAttribute('tabindex');node.removeAttribute('aria-pressed');node.setAttribute('role','img');node.classList.remove('pickable','picked','try-again');node.querySelector('.pick-hit')?.remove();});}
+   function clean(){canvas?.setAttribute('role','img');handlers.forEach(([node,click,key])=>{node.removeEventListener('click',click);node.removeEventListener('keydown',key);node.removeAttribute('tabindex');node.removeAttribute('aria-pressed');node.setAttribute('role','img');node.classList.remove('pickable','picked','try-again');node.querySelector('.pick-hit')?.remove();});}
    function end(ok){if(finished)return;finished=true;clean();cancelPick=null;resolve(ok);}
    cancelPick=()=>end(false);
    props.forEach((node,index)=>{
