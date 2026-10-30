@@ -105,6 +105,7 @@
  }
  function shell(type,c,i){
  const ids={flower:'flower',umbrella:'umbrella',egg:'chick-egg',duck:'duck-pond',blocks:'blocks',bubble:'bubbles',train:'locomotive',mole:'mole',butterfly:'butterfly',drawer:'drawers',gift:'gift-box',tube:'swim-ring',popsicle:'popsicle',plates:'plate',laundry:'clothesline',lunch:'bento',fish:'fishing',curtain:'curtain',cars:'car-parking',stamp:'stamp',shell:'seashell',balloon:'balloons',ferris:'ferris-wheel'};
+ if(type==='drawer'&&window.HangulSprites)return window.HangulSprites.carrier('drawers').replace('x="-102" y="-164" width="204" height="220"','x="-56" y="-83" width="112" height="100"');
  return window.HangulSprites?.[ids[type]]?window.HangulSprites.carrier(ids[type]):plainShell(type,c,i)+window.HangulArt.details(type);
  }
  function positions(type){

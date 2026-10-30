@@ -17,7 +17,7 @@
    function end(ok){if(finished)return;finished=true;clean();cancelPick=null;resolve(ok);}
    cancelPick=()=>end(false);
    props.forEach((node,index)=>{
-    node.insertAdjacentHTML('beforeend','<rect class="pick-hit" x="-110" y="-165" width="220" height="225" rx="20" fill="transparent"/>');node.classList.add('pickable');node.setAttribute('role','button');node.setAttribute('tabindex','0');node.setAttribute('aria-pressed','false');node.setAttribute('aria-label',`${node.dataset.jamo} 친구 선택`);
+    node.insertAdjacentHTML('beforeend',ride.type==='drawer'?'<rect class="pick-hit" x="-75" y="-85" width="150" height="125" rx="16" fill="transparent"/>':'<rect class="pick-hit" x="-110" y="-165" width="220" height="225" rx="20" fill="transparent"/>');node.classList.add('pickable');node.setAttribute('role','button');node.setAttribute('tabindex','0');node.setAttribute('aria-pressed','false');node.setAttribute('aria-label',`${node.dataset.jamo} 친구 선택`);
     const click=()=>{
      if(finished||!active()||chosen.has(index))return;
      if(index>=needed){node.classList.remove('try-again');void node.getBoundingClientRect();node.classList.add('try-again');el('explanation').textContent='다른 친구를 찾아볼까요? 괜찮아요, 다시 톡!';return;}
